@@ -17,5 +17,5 @@
 
 ## Присоединиться можно с помощью данной команды:
 ```sh
-   git clone https://github.com/doingJustForLabs/PhysChem.git
+   git clone https://github.com/doingJustForLabs/MatLab.git
 ```
