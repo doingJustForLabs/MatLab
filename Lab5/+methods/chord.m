@@ -1,17 +1,13 @@
 % Метод хорд
-function [x, iter] = chord(f, a, b, accuracy)
-    iter = 0;
-
-    while abs(b - a) > accuracy
-        abs(b - a)
-        x = a - (f(a) * (b - a)) / (f(b) - f(a))
+function [x, iter] = chord(f, x0, a, b, accuracy)
+    x1 = x0 - f(x0) / (f(b) - f(x0)) * (b - x0);    
+    iter = 1;
+    
+    while abs(x1 - x0) >= accuracy
+        x0 = x1;
         iter = iter + 1;
-        if f(a) * f(x) > 0
-            b = x;
-        else
-            a = x;
-        end
+        x1 = x0 - f(x0) / (f(b) - f(x0)) * (b - x0);  
     end
     
-    x = (a + b) / 2;
+    x = x1;
 end

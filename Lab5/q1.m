@@ -32,17 +32,17 @@ accuracy = 1e-5;
 
 % Решение методом половинного деления с высокой точностью
 [x_half, iter_half] = methods.binary_search(f, a, b, high_accuracy);
-fprintf('Метод половинного деления сошелся за %d итераций.\n', iter_half);
-fprintf('Приближенный корень (высокая точность): %f\n\n', x_half);
+fprintf('Метод половинного деления сошелся за %d итераций. (высокая точность)\n', iter_half);
+fprintf('Приближенный корень: %f\n\n', x_half);
 
 % Устанавливаем начальное приближение x0
 x0 = x_half;
 
 % Находим производную (для следующих методов)
-df = @(x) (f(x + accuracy) - f(x - accuracy)) / (2 * accuracy);
+df = @(x) 3*(x - 4).^ 2;
 
 % Решение методом хорд
-[x_chord, iter_chord] = methods.chord(f, a, b, accuracy);
+[x_chord, iter_chord] = methods.chord(f, x0, a, b, accuracy);
 fprintf('Метод хорд сошелся за %d итераций.\n', iter_chord);
 fprintf('Приближенный корень: %f\n\n', x_chord);
 
@@ -56,9 +56,18 @@ fprintf('Приближенный корень: %f\n\n', x_simple);
 fprintf('Метод касательных сошелся за %d итераций.\n', iter_newton);
 fprintf('Приближенный корень: %f\n\n', x_newton);
 
-
-
 % Решение методом секущих
-% [x_secant, iter_secant] = methods.secant(f, df, x0, accuracy);
-% fprintf('Метод хорд сошелся за %d итераций.\n', iter_secant);
-% fprintf('Приближенный корень: %f\n\n', x_secant);
+[x_secant, iter_secant] = methods.secant(f, x0, accuracy);
+fprintf('Метод секущих сошелся за %d итераций.\n', iter_secant);
+fprintf('Приближенный корень: %f\n\n', x_secant);
+
+% Добавляем звёздочки на график
+hold on;
+
+% Начальная точка (синяя звездочка)
+plot(x0, f(x0), 'b*', 'MarkerSize', 10, 'LineWidth', 2);
+
+% Найденный корень (красная звездочка)
+plot(root, 0, 'r*', 'MarkerSize', 10, 'LineWidth', 2);
+
+hold off;
