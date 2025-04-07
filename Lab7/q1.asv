@@ -1,0 +1,79 @@
+clear;
+clc;
+
+% Вариант 73
+
+x = [0; 3.5; 7; 10.5; 14; 17.5; 21; 24.5; 28; 31.5; 35; 
+     38.5; 42; 45.5; 49; 52.5; 56; 59.5; 63; 66.5; 70];
+
+y = [0.863750004; 0.813416161; 0.767210766; 0.724695155; 0.685487932; 
+    0.649254254; 0.615700259; 0.584566004; 0.555623761; 0.528670368; 
+    0.503525964; 0.480029605; 0.458038477; 0.437424122; 0.418072079; 
+    0.399878415; 0.382750465; 0.366603911; 0.35136275; 0.336957961; 
+    0.32332685
+];
+
+% Степень полинома
+n = 3;
+
+W = vander(x);
+% W = W(:, end-n:end);
+
+coefficients = W \ y;
+
+fprintf("Полином: P(x) = %.f6", coefficients(n+1))
+for k = n:-1:1
+    fprintf(' + %.6f x^%d', coefficients(k), n-k+1);
+end
+fprintf('\n');
+
+x_lin = linspace(min(x), max(x), 100);
+y_pol = polyval(coefficients, x_lin);
+y_spline = spline(x, y, x_lin);
+
+% figure;
+% plot(x, y, 'o', 'MarkerFaceColor', 'b');
+% hold on;
+% plot(x_lin, y_pol, 'r-', 'LineWidth', 1);
+% plot(x_lin, y_spline, 'k-', 'LineWidth', 1);
+% xlabel('Температура (C)');
+% ylabel('Вязкость (сP)');
+% title('Аппроксимация полиномом 3-й степени');
+% grid on;
+% legend('Данные', 'Полином', "Сплайн", 'Location', 'Best');
+
+fprintf("Таблица конечных разностей\n");
+
+n = length(y);
+
+diff_table = zeros(n, n);
+diff_table(:, 1) = x(:);
+diff_table(:, 2) = y(:);
+
+for i = 3:n
+    d = diff(y);
+
+    diff_table(:, i) = d;
+    break
+end
+
+disp(diff_table);
+
+% diff_table = diff(y);
+% 
+% disp(diff_table);
+% disp(max(diff_table) - min(diff_table));
+% 
+% diff_table = diff(diff_table);
+% 
+% disp(diff_table);
+
+
+% for i = 1:length(x) - 2
+%     disp(diff_table);
+%     d = max(diff_table) - min(diff_table);
+%     fprintf("%5f\n", d);
+%     % disp(max(diff_table) - min(diff_table));
+% 
+%     diff_table = diff(diff_table);
+% end
