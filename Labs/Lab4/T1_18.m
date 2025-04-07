@@ -1,14 +1,17 @@
 clc; clear;
 
-% Определение коэффициентов матрицы A и вектора b
-A = [2  2 -3  3;
-     3  2 -3  1;
-     1  1 -2  2;
-     2  4 -3  2];
+A = [23 2 1 3 2; 
+    1 3 3 4 4;
+    3 2 3 3 4;
+    2 3 -11 4 55;
+    1 3 3 2 5];
 
-b = [-3; -3; -1; -3];
+b = [177;
+    72;
+    73;
+    291;
+    69];
 
-% Определение детерминанта, ранга, нормы и числа обусловленности
 detA = det(A);
 rankA = rank(A);
 normA = norm(A);
@@ -17,7 +20,7 @@ condA = cond(A);
 function [new_A, new_b] = make_diagonally_dominant(A, b)
     % Выберем диагонально доминирующую матрицу D
     n = size(A, 1);
-    D = diag([4 4 4 4]); % Диагональная матрица с диагональным преобладанием
+    D = diag([4 4 4 4 4]); % Диагональная матрица с диагональным преобладанием
     D(D == 0) = 1;
     
     new_A = D; 
@@ -29,35 +32,29 @@ end
 
 [A, b] = make_diagonally_dominant(A, b);
 
-diag_dom = all(2*abs(diag(A)) >= sum(abs(A), 2));
-if ~diag_dom
-    disp('Матрица не обладает диагональным преобладанием. Методы Якоби и Зейделя могут не сойтись.');
-end
+% diag_dom = all(2*abs(diag(A)) >= sum(abs(A), 2));
+% if ~diag_dom
+%     disp('Матрица не обладает диагональным преобладанием. Методы Якоби и Зейделя могут не сойтись.');
+% end
 
 fprintf('Детерминант матрицы A: %f\n', detA);
 fprintf('Ранг матрицы A: %d\n', rankA);
 fprintf('Норма матрицы A: %f\n', normA);
 fprintf('Число обусловленности матрицы A: %f\n\n', condA);
 
-% Задаём точность и максимальное количество итераций
 accuracy = 1e-6;
 
-% Начальное приближение
 x0 = zeros(size(b));
 
-% --- Метод Якоби ---
 [x_jacobi, iter_jacobi] = jacobi_method(A, b, x0, accuracy);
 fprintf('Метод Якоби сошёлся за %d итераций.\n', iter_jacobi);
 disp('Решение методом Якоби:');
 disp(x_jacobi);
 
-% --- Метод Зейделя ---
 [x_zeidel, iter_zeidel] = seidel_method(A, b, x0, accuracy);
 fprintf('Метод Зейделя сошёлся за %d итераций.\n', iter_zeidel);
 disp('Решение методом Зейделя:');
 disp(x_zeidel);
-
-% --- Метод простой итерации ---
 
 tau = 0.1;
 
@@ -66,24 +63,20 @@ fprintf('Метод простой итерации сошёлся за %d ит�
 disp('Решение методом простой итерации:');
 disp(x_simple);
 
-% --- Решение через встроенную функцию linsolve ---
 
 x_linsolve = linsolve(A, b);
 disp('Решение с использованием linsolve:');
 disp(x_linsolve);
 
-% --- Функция метода Якоби ---
 function [x, iter] = jacobi_method(A, b, x0, accuracy)
     n = length(b);
 
-    % [A, b] = make_diagonally_dominant(A, b);
-
-    D = diag(diag(A)); % Диагональная часть
-    L = tril(A, -1);   % Нижняя треугольная часть (без диагонали)
-    U = triu(A, 1);    % Верхняя треугольная часть (без диагонали)
+    D = diag(diag(A));
+    L = tril(A, -1);   
+    U = triu(A, 1);    
 
     iter = 0;
-    x1 = D \ (b - (L + U) * x0); % Первое приближение
+    x1 = D \ (b - (L + U) * x0); 
 
     while norm(x1 - x0, inf) > accuracy
         x0 = x1;
