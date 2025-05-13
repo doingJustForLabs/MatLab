@@ -187,7 +187,7 @@ function [optimum, history] = gold_sec(func, a, b, eps, find_max)
         current_x = (a+b)/2;
         history = [history; current_x, func(current_x)];
         
-        if xor(f1 > f2, find_max)
+        if (f1 > f2) ~= find_max
             a = x1;
             x1 = x2;
             f1 = f2;
@@ -232,7 +232,7 @@ function [optimum, history] = parabolic_method(func, a, b, eps, find_max)
         history = [history; x, fx];
 
         % Обновляем точки в зависимости от направления
-        if xor(fx > f2, find_max)
+        if (fx > f2) ~= find_max
             if x < x2
                 x1 = x;
                 f1 = fx;

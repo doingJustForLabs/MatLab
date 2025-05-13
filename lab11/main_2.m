@@ -30,7 +30,8 @@ for i = 1:max_iter
         break;
     end
     
-    x = x_new; y = y_new;
+    x = x_new; 
+    y = y_new;
     trajectory(end+1, :) = [x, y];
 end
 
