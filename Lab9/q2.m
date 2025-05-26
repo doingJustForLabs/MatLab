@@ -1,10 +1,10 @@
 clear;
 clc;
 
-% Вариант 25 — f(x) = sin(x) + 0.3x, x0 = 3.72
+% Вариант 25
 
 x0 = 3.72;
-steps = [10, 20, 50, 100, 200, 500];  % разные количества узлов
+steps = [10, 20, 50, 100, 200];  % разные количества узлов
 N = length(steps);
 
 % Предварительное выделение памяти
@@ -16,9 +16,9 @@ step_sizes = zeros(1, N);
 
 for idx = 1:N
     n = steps(idx);
-    x = linspace(0, 2*pi, n);         % равномерная сетка
-    y = sin(x) + 0.3*x;               % функция
-    h = x(2) - x(1);                  % шаг
+    x = linspace(0, 2*pi, n); % равномерная сетка
+    y = sin(x) + 0.3*x; % функция
+    h = x(2) - x(1); % шаг
 
     [dy_simple, d2y_simple] = methods.simpleFormula(x, y, h);
     [dy_many, d2y_many] = methods.multipointFormula(x, y, h);         
